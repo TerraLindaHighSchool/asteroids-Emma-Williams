@@ -138,6 +138,11 @@ public abstract class SmoothMover extends Actor
         velocity.revertVertical();
     }
     
+     public void increaseSpeed(Vector s) 
+    {
+        velocity.add(s);
+    }
+    
     /**
      * Return the current speed.
      */
