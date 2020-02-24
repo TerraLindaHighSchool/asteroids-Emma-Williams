@@ -39,6 +39,7 @@ public class Rocket extends SmoothMover
         move();
         checkKeys();
         reloadDelayCount++;
+        checkCollision();
     }
     
     /**
@@ -72,7 +73,8 @@ public class Rocket extends SmoothMover
             acceleration.setDirection(getRotation());
             increaseSpeed(acceleration);
         }
-        else {
+        else 
+        {
             setImage(rocket);        
         }
     }
@@ -88,6 +90,13 @@ public class Rocket extends SmoothMover
             getWorld().addObject (bullet, getX(), getY());
             bullet.move ();
             reloadDelayCount = 0;
+        }
+    }
+    
+    private void checkCollision()
+    {
+        if( getOneIntersectingObject(Asteroid.class) != null)
+        {
         }
     }
     
