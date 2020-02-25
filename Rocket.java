@@ -97,10 +97,6 @@ public class Rocket extends SmoothMover
     {
         if( getOneIntersectingObject(Asteroid.class) != null)
         {
-            World world = getWorld();
-            world.addObject(new Explosion(), getX(), getY());
-            getWorld().removeObject(this);
-            Greenfoot.stop();
         }
     }
     
