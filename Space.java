@@ -10,7 +10,8 @@ public class Space extends World
 {
     private Counter scoreCounter;
     private int startAsteroids = 3;
-
+    private static int pointsToAdd = 5;
+    
     /**
      * Create the space and all objects within it.
      */
@@ -67,6 +68,11 @@ public class Space extends World
      */
     public void gameOver() 
     {
-        // TODO: show the score board here. Currently missing.
+       
+    }
+    
+    public void updateScore(int addToScore)
+    {
+        scoreCounter.add(addToScore);
     }
 }
