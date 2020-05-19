@@ -14,6 +14,7 @@ public class Rocket extends SmoothMover
     private static final int gunReloadTime = 5;         // The minimum delay between firing the gun.
 
     private int reloadDelayCount;               // How long ago we fired the gun the last time.
+    private Vector acceleration;
     
     private GreenfootImage rocket = new GreenfootImage("rocket.png");    
     private GreenfootImage rocketWithThrust = new GreenfootImage("rocketWithThrust.png");
@@ -22,8 +23,11 @@ public class Rocket extends SmoothMover
      * Initialise this rocket.
      */
     public Rocket()
-    {
-        reloadDelayCount = 5;
+    { 
+        reloadDelayCount = 0;
+        acceleration = new Vector(0, 0.3);    
+        increaseSpeed(new Vector(13, 0.3));
+        addToVelocity(new Vector(180, .1));
     }
 
     /**
@@ -32,8 +36,10 @@ public class Rocket extends SmoothMover
      */
     public void act()
     {
+        move();
         checkKeys();
         reloadDelayCount++;
+        checkCollision();
     }
     
     /**
@@ -41,9 +47,35 @@ public class Rocket extends SmoothMover
      */
     private void checkKeys() 
     {
+        ignite(Greenfoot.isKeyDown("up"));
+        
         if (Greenfoot.isKeyDown("space")) 
         {
             fire();
+        }
+        
+        if (Greenfoot.isKeyDown("left"))
+        {
+            turn(5);
+        }
+        
+        if (Greenfoot.isKeyDown("right"))
+        {
+            turn(-5);
+        }
+    }
+    
+    private void ignite(boolean boosterOn) 
+    {
+        if (boosterOn) 
+        {
+            setImage(rocketWithThrust);
+            acceleration.setDirection(getRotation());
+            increaseSpeed(acceleration);
+        }
+        else 
+        {
+            setImage(rocket);        
         }
     }
     
@@ -58,6 +90,17 @@ public class Rocket extends SmoothMover
             getWorld().addObject (bullet, getX(), getY());
             bullet.move ();
             reloadDelayCount = 0;
+        }
+    }
+    
+    private void checkCollision()
+    {
+        if( getOneIntersectingObject(Asteroid.class) != null)
+        {
+            Space space= (Space) getWorld();
+            space.addObject(new Explosion(), getX(), getY());
+            space.removeObject(this);
+            space.gameOver();
         }
     }
     
